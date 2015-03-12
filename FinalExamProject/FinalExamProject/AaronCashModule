@@ -1,0 +1,100 @@
+void cashierModule(){
+	string bookName;
+	double price;
+	double subTotal = 0;
+	double total = 0;
+	bool gMainMenu = false;
+	bool checkout = false;
+	bool bookFound = false;
+	BookList bookList{ "PAJL.txt" };
+	bookList.readFromFile();
+	int listSize = bookList.getSize();
+
+	for (int i = 0; i < (CENTER - 7); i++){
+		cout << " ";
+	}
+	cout << "P.A.J.L. BOOKS" << endl;
+	for (int i = 0; i < (CENTER - 5); i++){
+		cout << " ";
+	}
+	cout << "Cashier" << endl << endl;
+	for (int i = 0; i < INDENT; i++){
+		cout << " ";
+	}
+	cout << "Type Exit to go to Main Menu" << endl;
+	for (int i = 0; i < INDENT; i++){
+		cout << " ";
+	}
+	cout << "Type Checkout to Checkout" << endl << endl;
+	for (int i = 0; i < INDENT; i++){
+		cout << " ";
+	}
+
+	cout << endl;
+
+	while (gMainMenu == false){
+		while (checkout == false){
+			cout << "Book Name: ";
+			getline(cin, bookName);			//USER INPUT TO SELECT CHOICE, SAVES INPUT TO STRING VARIABLE 'BOOKNAME'
+			cin.clear();
+			//cin.ignore(1000, '\n');
+
+			if (bookName == "checkout"){
+				checkout = true;
+				break;
+			}
+
+			if (bookName == "exit"){
+				gMainMenu = true;
+				break;
+			}
+
+			for (int i = 0; i < listSize; i++)
+			{
+				Book &b = bookList[i];
+
+				if (b.getBookTitle() == bookName && b.getQuantity() != 0)
+				{
+					subTotal += b.getRetailCost();
+					b.setQuantity(b.getQuantity() - 1);
+					bookFound = true;
+				}
+
+			}
+
+			if (bookFound == false)
+				cout << "Invalid book" << endl << endl;
+
+			else if (bookFound == true)
+				bookFound = false;
+
+			total = subTotal + 2.00;
+		}
+
+		if (gMainMenu == true)
+			break;
+
+		else
+		{
+			cout << "Sub-Total: " << subTotal << endl;
+			for (int i = 0; i < INDENT; i++){
+				cout << " ";
+			}
+			cout << "Total: " << subTotal << endl << endl;
+			for (int i = 0; i < INDENT - 20; i++){
+				cout << " ";
+			}
+			cout << "Thank you for shopping at  P.A.J.L. BOOKS" << endl << endl;
+			for (int i = 0; i < INDENT; i++){
+				cout << " ";
+			}
+		}
+
+
+		system("pause");
+		clearScreen();
+		cashierModule();
+	}
+
+	clearScreen();
+}
